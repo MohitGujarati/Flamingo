@@ -12,6 +12,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
+        }
 //bottom navigation
         var bottomnav =
             findViewById<BottomNavigationView>(R.id.bottomNavigationView)
@@ -23,10 +26,6 @@ class MainActivity : AppCompatActivity() {
         // activity fragment
         // pixel perfect design
         // material design
-
-
-
-
 
 
     }

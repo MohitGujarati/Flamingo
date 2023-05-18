@@ -22,7 +22,7 @@ class NewsAdapter(
 ) :
     RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
-    //when you enwant to apply on click in activity
+    //when you want to apply on click in activity
     interface Onclickbtn {
         fun OnClickShareBtn(position: Int)
         fun OnClickReadmoreBtn(position: Int)
