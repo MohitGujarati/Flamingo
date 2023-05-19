@@ -1,7 +1,10 @@
 package com.example.flamingo.view.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +19,6 @@ import com.example.flamingo.data.model.Article
 import com.example.flamingo.data.model.NewsMainModel
 import com.example.flamingo.data.rest.Retrofit_object
 import com.example.flamingo.view.adapter.NewsAdapter
-import com.google.android.material.button.MaterialButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,17 +39,22 @@ class HomeFragment : Fragment() {
         recview = View.findViewById(R.id.newRec)
         ed_user = View.findViewById(R.id.ed_user)
         btnsearch = View.findViewById(R.id.btnsearch)
-
+        ed_user.clearFocus();
         loadnews(View, recview)
-
         btnsearch.setOnClickListener {
 
             if (ed_user.text.isEmpty()) {
                 loadnews(View, recview)
+
                 Toast.makeText(View.context, "enter data ", Toast.LENGTH_SHORT).show()
             } else {
+                ed_user.apply {
+                    gravity = Gravity.CENTER
+                    clearFocus();
+                }
                 loadCountrynews(View, recview, ed_user.text.toString())
             }
+
         }
 
 
@@ -73,7 +80,16 @@ class HomeFragment : Fragment() {
                 if (data_response != null) {
                     newslist.addAll(data_response.articles)
 
-                    val adapter = NewsAdapter(view.context, newslist)
+                    val adapter =
+                        NewsAdapter(view.context, newslist, object : NewsAdapter.Onclickbtn {
+                            override fun OnClickShareBtn(position: Int) {
+                                sharenews()
+                            }
+
+                            override fun OnClickReadmoreBtn(position: Int, urlString: String) {
+                                readmore(position, urlString)
+                            }
+                        })
                     recview.adapter = adapter
                     adapter.notifyDataSetChanged()
 
@@ -110,7 +126,16 @@ class HomeFragment : Fragment() {
                 if (data_response != null) {
                     datalist.addAll(data_response.articles)
 
-                    val adapter = NewsAdapter(view.context, datalist)
+                    val adapter =
+                        NewsAdapter(view.context, datalist, object : NewsAdapter.Onclickbtn {
+                            override fun OnClickShareBtn(position: Int) {
+                                sharenews()
+                            }
+
+                            override fun OnClickReadmoreBtn(position: Int, urlString: String) {
+                                readmore(position, urlString)
+                            }
+                        })
                     recview.adapter = adapter
                 } else {
                     Toast.makeText(view.context, "No data found", Toast.LENGTH_SHORT).show()
@@ -121,6 +146,24 @@ class HomeFragment : Fragment() {
                 Toast.makeText(view.context, "error", Toast.LENGTH_SHORT).show()
             }
         })
+
+
+    }
+
+    private fun sharenews() {
+        val sendIntent = Intent()
+        sendIntent.action = Intent.ACTION_SEND
+        sendIntent.putExtra(
+            Intent.EXTRA_TEXT,
+            "Hey Check out this Great app:"
+        )
+        sendIntent.type = "text/plain"
+        startActivity(sendIntent)
+    }
+
+    private fun readmore(position: Int, urlString: String) {
+
+        context?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(urlString)))
 
 
     }

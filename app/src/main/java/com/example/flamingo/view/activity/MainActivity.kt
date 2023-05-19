@@ -2,6 +2,7 @@ package com.example.flamingo.view.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -12,9 +13,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        if (supportActionBar != null) {
-            supportActionBar!!.hide()
-        }
+
+        getWindow().setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        );
+
+
 //bottom navigation
         var bottomnav =
             findViewById<BottomNavigationView>(R.id.bottomNavigationView)
@@ -24,8 +29,8 @@ class MainActivity : AppCompatActivity() {
         // Tabview ,dialog
         // api sql
         // activity fragment
-        // pixel perfect design
-        // material design
+        // pixel perfect design:Done
+        // material design:Done
 
 
     }

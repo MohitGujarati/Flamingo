@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/homeFragment"
-        android:icon="@drawable/ic_home"
-        android:title="News" />
+        android:iconTint="@color/white"
+        android:icon="@drawable/newsicon"
+        tools:ignore="MenuTitle" />
     <item
         android:id="@+id/detailFragment"
-        android:icon="@drawable/ic_home"
-        android:title="Movie" />
+        android:iconTint="@color/white"
+        android:icon="@drawable/eventicon"
+        tools:ignore="MenuTitle" />
 
     <item
         android:id="@+id/profileFragment"
-        android:icon="@drawable/ic_home"
-        android:title="Profile" />
+        android:iconTint="@color/white"
+        android:icon="@drawable/usericon"
+        tools:ignore="MenuTitle" />
 
 
 </menu>

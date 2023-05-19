@@ -1,8 +1,6 @@
 package com.example.flamingo.view.adapter
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.flamingo.R
 import com.example.flamingo.data.model.Article
-import com.example.flamingo.data.model.NewsMainModel
 import com.google.android.material.button.MaterialButton
 
 class NewsAdapter(
     var context: Context,
-    var datalist: ArrayList<Article>
+    var datalist: ArrayList<Article>,
+    var OnClickListine: Onclickbtn
 
 ) :
     RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
@@ -25,7 +23,7 @@ class NewsAdapter(
     //when you want to apply on click in activity
     interface Onclickbtn {
         fun OnClickShareBtn(position: Int)
-        fun OnClickReadmoreBtn(position: Int)
+        fun OnClickReadmoreBtn(position: Int, urlString: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,19 +34,30 @@ class NewsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var mymodel = datalist[position]
-        Glide.with(context).load(mymodel.urlToImage).into(holder.newsImage)
+        if (mymodel.urlToImage.isNullOrBlank()) {
+            holder.newsImage.setImageResource(R.drawable.card_image)
+        } else {
+            Glide.with(context).load(mymodel.urlToImage).into(holder.newsImage)
+        }
+
         holder.txttile.text = mymodel.title
         holder.txtdes.text = mymodel.description
 
-        holder.tv_publish.text=mymodel.source.name
+        holder.tv_publish.text = mymodel.source.name
 
 
         var urlString = mymodel.url
 
         holder.btn.setOnClickListener {
-            context?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(urlString)))
+
+            OnClickListine.OnClickReadmoreBtn(position,mymodel.url.toString())
 
         }
+        holder.btn_share.setOnClickListener {
+            OnClickListine.OnClickShareBtn(position)
+
+        }
+
     }
 
     override fun getItemCount(): Int {
@@ -61,7 +70,7 @@ class NewsAdapter(
         var txtdes = itemView.findViewById<TextView>(R.id.tv_des)
         var tv_publish = itemView.findViewById<TextView>(R.id.tv_publish)
         var newsImage = itemView.findViewById<ImageView>(R.id.newsImage)
-        var btn = itemView.findViewById<MaterialButton>(R.id.btnurl)
+        var btn = itemView.findViewById<MaterialButton>(R.id.btnReadMore)
         var btn_share = itemView.findViewById<MaterialButton>(R.id.btnshare)
 
     }
