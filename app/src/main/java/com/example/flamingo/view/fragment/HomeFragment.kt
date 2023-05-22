@@ -15,8 +15,10 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flamingo.R
+import com.example.flamingo.data.helper.SavednewsHelper
 import com.example.flamingo.data.model.Article
 import com.example.flamingo.data.model.NewsMainModel
+import com.example.flamingo.data.model.NewsSavedModel
 import com.example.flamingo.data.rest.Retrofit_object
 import com.example.flamingo.view.adapter.NewsAdapter
 import retrofit2.Call
@@ -46,7 +48,7 @@ class HomeFragment : Fragment() {
             if (ed_user.text.isEmpty()) {
                 loadnews(View, recview)
 
-                Toast.makeText(View.context, "enter data ", Toast.LENGTH_SHORT).show()
+                Toast.makeText(View.context, "enter text ", Toast.LENGTH_SHORT).show()
             } else {
                 ed_user.apply {
                     gravity = Gravity.CENTER
@@ -82,12 +84,27 @@ class HomeFragment : Fragment() {
 
                     val adapter =
                         NewsAdapter(view.context, newslist, object : NewsAdapter.Onclickbtn {
-                            override fun OnClickShareBtn(position: Int) {
-                                sharenews()
+                            override fun OnClickShareBtn(
+                                position: Int,
+                                urlString: String,
+                                urlToImage: String
+                            ) {
+                                shareNews(urlString, urlToImage)
                             }
 
                             override fun OnClickReadmoreBtn(position: Int, urlString: String) {
                                 readmore(position, urlString)
+                            }
+
+                            override fun OnClickSaveBtn(
+                                title: String,
+                                description: String,
+                                url: String,
+                                urlToImage: String
+                            ) {
+
+                                Toast.makeText(view.context, "called", Toast.LENGTH_SHORT).show()
+                                saveNews(view, title, description, url, urlToImage)
                             }
                         })
                     recview.adapter = adapter
@@ -105,6 +122,7 @@ class HomeFragment : Fragment() {
 
 
     }
+
 
     private fun loadnews(view: View, recview: RecyclerView) {
 
@@ -128,12 +146,28 @@ class HomeFragment : Fragment() {
 
                     val adapter =
                         NewsAdapter(view.context, datalist, object : NewsAdapter.Onclickbtn {
-                            override fun OnClickShareBtn(position: Int) {
-                                sharenews()
+                            override fun OnClickShareBtn(
+                                position: Int,
+                                urlString: String,
+                                urlToImage: String
+                            ) {
+                                shareNews(urlString, urlToImage)
                             }
 
                             override fun OnClickReadmoreBtn(position: Int, urlString: String) {
                                 readmore(position, urlString)
+                            }
+
+                            override fun OnClickSaveBtn(
+                                title: String,
+                                description: String,
+                                url: String,
+                                urlToImage: String
+                            ) {
+                                Toast.makeText(view.context, "called 2", Toast.LENGTH_SHORT).show()
+
+                                saveNews(view, title, description, url, urlToImage)
+
                             }
                         })
                     recview.adapter = adapter
@@ -150,16 +184,6 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun sharenews() {
-        val sendIntent = Intent()
-        sendIntent.action = Intent.ACTION_SEND
-        sendIntent.putExtra(
-            Intent.EXTRA_TEXT,
-            "Hey Check out this Great app:"
-        )
-        sendIntent.type = "text/plain"
-        startActivity(sendIntent)
-    }
 
     private fun readmore(position: Int, urlString: String) {
 
@@ -167,5 +191,40 @@ class HomeFragment : Fragment() {
 
 
     }
+
+    private fun shareNews(urlString: String, imageUrl: String) {
+
+        val sendIntent = Intent()
+        sendIntent.action = Intent.ACTION_SEND
+        sendIntent.putExtra(
+            Intent.EXTRA_TEXT,
+            "Hey Check out this News :$urlString"
+        )
+        sendIntent.type = "text/plain"
+        startActivity(sendIntent)
+
+
+    }
+
+    private fun saveNews(
+        view: View,
+        title: String,
+        description: String,
+        url: String,
+        urlToImage: String
+    ) {
+
+        var dbhelper = SavednewsHelper(view.context)
+
+        dbhelper.insert(
+            NewsSavedModel(
+               id, title, description, url, urlToImage
+            )
+        )
+
+        Toast.makeText(view.context, "inserted", Toast.LENGTH_SHORT).show()
+
+    }
+
 
 }

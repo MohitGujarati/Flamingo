@@ -22,8 +22,9 @@ class NewsAdapter(
 
     //when you want to apply on click in activity
     interface Onclickbtn {
-        fun OnClickShareBtn(position: Int)
+        fun OnClickShareBtn(position: Int, articleLink: String, urlToImage: String)
         fun OnClickReadmoreBtn(position: Int, urlString: String)
+        fun OnClickSaveBtn(title:String,description:String,url:String,urlToImage:String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -54,7 +55,12 @@ class NewsAdapter(
 
         }
         holder.btn_share.setOnClickListener {
-            OnClickListine.OnClickShareBtn(position)
+            OnClickListine.OnClickShareBtn(position,mymodel.url,mymodel.urlToImage)
+
+        }
+
+        holder.btnsave.setOnClickListener {
+            OnClickListine.OnClickSaveBtn(mymodel.title,mymodel.description,mymodel.url,mymodel.urlToImage)
 
         }
 
@@ -68,6 +74,7 @@ class NewsAdapter(
     class ViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
         var txttile = itemView.findViewById<TextView>(R.id.tv_headline)
         var txtdes = itemView.findViewById<TextView>(R.id.tv_des)
+        var btnsave = itemView.findViewById<TextView>(R.id.btnsave)
         var tv_publish = itemView.findViewById<TextView>(R.id.tv_publish)
         var newsImage = itemView.findViewById<ImageView>(R.id.newsImage)
         var btn = itemView.findViewById<MaterialButton>(R.id.btnReadMore)
