@@ -103,7 +103,7 @@ class HomeFragment : Fragment() {
                                 urlToImage: String
                             ) {
 
-                                Toast.makeText(view.context, "called", Toast.LENGTH_SHORT).show()
+                               // Toast.makeText(view.context, "called", Toast.LENGTH_SHORT).show()
                                 saveNews(view, title, description, url, urlToImage)
                             }
                         })
@@ -164,7 +164,7 @@ class HomeFragment : Fragment() {
                                 url: String,
                                 urlToImage: String
                             ) {
-                                Toast.makeText(view.context, "called 2", Toast.LENGTH_SHORT).show()
+                             //   Toast.makeText(view.context, "called 2", Toast.LENGTH_SHORT).show()
 
                                 saveNews(view, title, description, url, urlToImage)
 
@@ -214,15 +214,21 @@ class HomeFragment : Fragment() {
         urlToImage: String
     ) {
 
+        var urlToImage_var=urlToImage
+
         var dbhelper = SavednewsHelper(view.context)
+
+        if (urlToImage.isNullOrBlank()){
+            urlToImage_var=""
+        }
 
         dbhelper.insert(
             NewsSavedModel(
-               id, title, description, url, urlToImage
+               id, title, description, url, urlToImage_var
             )
         )
 
-        Toast.makeText(view.context, "inserted", Toast.LENGTH_SHORT).show()
+        Toast.makeText(view.context, "saved", Toast.LENGTH_SHORT).show()
 
     }
 
