@@ -26,10 +26,7 @@ class MainActivity : AppCompatActivity() {
         var nav_container = findNavController(R.id.fragmentContainerView)
         bottomnav.setupWithNavController(nav_container)
 
-
-        // Tabview
-        // dialog
-        // sql
+        // sql:Done
         // api:Done
         // activity fragment:Done
         // pixel perfect design:Done
